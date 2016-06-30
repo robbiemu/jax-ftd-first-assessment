@@ -1,0 +1,70 @@
+Create a file storage application.
+It should consist of three application layers; presentation, domain, and persistence.
+
+The Presentation Layer - JavaScript Command Line Interface (CLI)
+
+Develop a command line interface for the file storage application using JavaScript and the Vorpal library.
+It should connect to the back-end Java server and allow its user to register with the file storage application,
+following which the user should be able to choose files on his or her local machine to store in the application's
+database. The user should be able to view a list of files he or she has stored in the database, as well as choose
+files from that list to download and recreate on his or her local machine.
+
+In order to achieve this, implement the following vorpal commands:
+  * register <username> <password>
+    * should register a new user with the application
+    * the plaintext password shouldn't be stored anywhere, ever
+    * the password should be hashed for storage according to the bcrypt algorithm
+  * login <username> <password>
+    * should log a user in to the command line interface
+    * the plaintext password shouldn't be stored anywhere, ever
+    * the commandline application should store the user details necessary for logged-in functionality
+    * the hashed password should compared on the client side
+
+The following commands should not be available unless a user is logged in
+  * files
+    * should retrieve a list of files previously stored by the user
+    * should display the file ids and paths as stored in the database
+  * upload <local file path> [path stored in database]
+    * should select a local file based on the local file path
+    * it should read that file and send it to the server
+    * and it should optionally allow the user to save the file in the database under a different specified path
+    * (bonus) implement vorpal autocomplete for local files
+  * download <database file id> [local file path]
+    * should request a file from the server with the specified id
+    * by default, it should store that file locally under the path stored in the database
+    * the user should be optionally able to specify an alternate local path
+
+General Requirements (CLI)
+  * Vorpal command "actions" should be implemented by returning promises
+
+General Recommendations (CLI)
+  * Every command opens and closes a new connection to the server
+
+The Domain Layer - Java Server
+  * Model client commands and response data as objects and use JAXB/Moxy to serialize and deserialize that data as JSON
+  * JAXB/Moxy is a requirement
+  * Must be able to handle many client connections concurrently
+  * It must store all user data (files and authentication details) on its associated database server
+  * Files to be shared can be of any type or encoding
+  * An ExecutorService must be used to handle a many-threaded situation
+
+General Recommendations (Server)
+  * Test JAXB serialization and deserialization of JSON outside of the application structure
+  * Don't try to force JAXB to do exactly what you'd like it to
+  * Organize your JDBC code into Dao like I demonstrated
+
+The Persistence Layer - MySQL Database Server
+  * Must store the following user data:
+    * username
+      * unique
+    * password (only store hashed (60 characters))
+      * not null
+  * Must store the following file data:
+    * absolute file path
+      * not null
+    * file data
+      * stored as a BLOB
+
+General Recommendations
+  * Start with DB schema creation
+  * Accross all layers, keep naming consistent
