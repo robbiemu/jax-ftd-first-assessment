@@ -1,10 +1,16 @@
 package com.cooksys.ftd.week3.command;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +20,7 @@ import com.cooksys.ftd.week3.db.dao.UserDao;
 import com.cooksys.ftd.week3.db.model.File;
 import com.cooksys.ftd.week3.db.model.User;
 import com.cooksys.ftd.week3.transactions.Credentials;
+import com.cooksys.ftd.week3.transactions.Result;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
 public class Upload implements AbstractCommand {
@@ -52,7 +59,23 @@ public class Upload implements AbstractCommand {
 		}
 		
 		if (!sm.getError()) {
-			sm.setMessage("Credentials registered for user " + user.getUsername());
+			Result r = new Result();
+			r.setResult("File " + file.getFilename() + " uploaded for user " + user.getUsername());
+			sm.setData(r);
+
+			try {
+				JAXBContext jc = JAXBContext.newInstance(Result.class);
+				Marshaller marshaller = jc.createMarshaller();
+				marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+				
+				StringWriter sw = new StringWriter();
+				marshaller.marshal( r, new PrintWriter(sw) );
+							
+				sm.setMessage(sw.toString());
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return sm;
