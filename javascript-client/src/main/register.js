@@ -1,6 +1,7 @@
 'use strict'
 
 const serviceMessage = require('./serviceMessage')
+const hasher = require('./hash')
 
 function encodeEntry (fieldname, type, value) {
   return {
@@ -15,7 +16,9 @@ function encodeEntry (fieldname, type, value) {
 function register (args, Vars, callback) {
   return (
     Promise.resolve('host' in Vars && 'port' in Vars)
-      .then((hostReady) => {
+    .then((hostReady) => {
+      Promise.resolve(hasher.encode(args.password))
+      .then((password_hash) => {
         if (hostReady) {
           let msg = {
             clientMessage: {
@@ -27,7 +30,7 @@ function register (args, Vars, callback) {
               args: {
                 entry: [
                   encodeEntry('username', 'string', args.username),
-                  encodeEntry('password_hash', 'string', encode(args.password))
+                  encodeEntry('password_hash', 'string', password_hash)
                 ]
               }
             }
@@ -45,6 +48,7 @@ function register (args, Vars, callback) {
         }
       })
       .then(callback())
+    })
   )
 }
 
