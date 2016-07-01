@@ -16,7 +16,6 @@ import com.cooksys.ftd.week3.db.DBConnection;
 import com.cooksys.ftd.week3.db.dao.FileDao;
 import com.cooksys.ftd.week3.db.dao.UserDao;
 import com.cooksys.ftd.week3.db.model.User;
-import com.cooksys.ftd.week3.transactions.ClientMessage;
 import com.cooksys.ftd.week3.transactions.Credentials;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
@@ -24,6 +23,7 @@ public class Login implements AbstractCommand {
 
 	private PrintWriter writer;
 	private Map<String, Object> args;
+	private Credentials credentials;
 
 	private UserDao userDao = new UserDao();
 	private FileDao fileDao = new FileDao();
@@ -108,4 +108,12 @@ public class Login implements AbstractCommand {
 		this.fileDao = fileDao;
 	}
 
+	public Credentials getCredentials() {
+		return credentials;
+	}
+
+	@Override
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
+	}
 }

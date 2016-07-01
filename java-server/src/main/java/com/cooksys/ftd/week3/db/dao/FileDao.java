@@ -59,4 +59,29 @@ public class FileDao extends Dao {
 		}
 		return file;
 	}
+	
+	public File getFileByFilenameAndUserFK(String fqn, Long fk, Connection c) {
+		String sql = "SELECT * FROM files WHERE filename = '" + fqn + "' AND user_id = " + fk;
+
+		File file = null;
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			Long pk = rs.getLong(File.PRIMARY_KEY);
+			byte[] fileData = rs.getBytes(File.FILE_COLUMN);
+			
+			file = new File(fqn, fileData);
+			file.setPrimaryKey(pk);
+			
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			log.warn("Error preparing or executing sql: " + sql);
+			log.warn(e.getMessage());
+			e.printStackTrace();
+		}
+		return file;
+	}
+
 }

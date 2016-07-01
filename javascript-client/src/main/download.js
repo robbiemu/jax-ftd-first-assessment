@@ -3,30 +3,29 @@
 const serviceMessage = require('./serviceMessage')
 const encodeEntry = require('./encodeEntry')
 const Base64 = require('./base64')
-const { fileReady, i } = require('./filePromises')
+const { i, fileNotReady } = require('./filePromises')
 
-function upload (args, Vars, callback) {
+function download (args, Vars, callback) {
   return (
-    Promise.resolve(fileReady(args.local_file_path))
+    Promise.resolve(fileNotReady(args.local_file_path))
     .then(new Promise(
       (res, rej) => {
         if ('host' in Vars && 'port' in Vars) {
           Promise.resolve('username' in Vars && 'password' in Vars) // is a password_hash
           .then((authenticated) => {
             if (authenticated) {
-              let encoder = new Base64()
+              let decoder = new Base64()
 
               let msg = {
                 clientMessage: {
-                  commandClassName: 'Upload',
+                  commandClassName: 'Download',
                   credentials: {
                     username: Vars.username,
                     password: Vars.password
                   },
                   args: {
                     entry: [
-                      encodeEntry('filepath', 'string', args.local_file_path),
-                      encodeEntry('file', 'string', encoder.encode(args.local_file_path))
+                      encodeEntry('filepath', 'string', args.local_file_path)
                     ]
                   }
                 }
@@ -39,7 +38,8 @@ function upload (args, Vars, callback) {
                   if (response.errors) {
                     Vars.Log.error(`[${response.type}] ${response.message}`)
                   } else {
-                    Vars.Log.info(`File uploaded: ${args.local_file_path}`)
+                    Vars.Log.info('Received file ' + args.local_file_path)
+                    decoder.decode(response.file, args.local_file_path)
                   }
                 })
             } else {
@@ -58,4 +58,4 @@ function upload (args, Vars, callback) {
   )
 }
 
-module.exports = upload
+module.exports = download

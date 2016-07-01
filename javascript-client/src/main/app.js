@@ -8,7 +8,7 @@ const configureHost = require('./configureHost')
 const register = require('./register')
 const login = require('./login')
 const upload = require('./upload')
-/*const download = require('./download')*/
+const download = require('./download')
 
 const Vars = {}
 
@@ -70,12 +70,12 @@ function run () {
     .alias('create')
     .description('Using current credentials for authentication, upload a file to the database')
     .action(function (args, callback) { upload(args, Vars, callback) })
-/*
-  cli.command('download <database file id> [local file path]')
+
+  cli.command('download <local_file_path>')
     .alias('read')
     .description('Using current credentials for authentication, retrieve a file from the database')
-    .action(function (args, callback) { download(Vars, args) })
-  */
+    .action(function (args, callback) { download(args, Vars, callback) })
+
 
   cli.show()
 }

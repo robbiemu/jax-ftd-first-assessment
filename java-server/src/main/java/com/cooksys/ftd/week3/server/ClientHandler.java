@@ -58,6 +58,7 @@ public class ClientHandler implements Runnable {
 //				log.debug("args: " + ac.getArgs());
 				
 				ac.setWriter(writer);
+				ac.setCredentials(clientResponse.getCredentials());
 				App.executor.execute(ac);
 			}
 		} catch (IOException e) {

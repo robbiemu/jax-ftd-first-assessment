@@ -8,5 +8,7 @@ public class CommandRegistry {
 	static {
 		registry.put(RegisterUser.class.getSimpleName(), RegisterUser.class);
 		registry.put(Login.class.getSimpleName(), Login.class);
+		registry.put(Upload.class.getSimpleName(), Upload.class);
+		registry.put(Download.class.getSimpleName(), Download.class);
 	}
 }

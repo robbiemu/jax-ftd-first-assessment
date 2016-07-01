@@ -3,12 +3,14 @@ package com.cooksys.ftd.week3.command;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import com.cooksys.ftd.week3.transactions.Credentials;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
 public class TransmitError implements AbstractCommand {
 	ServerMessage serverMessage;
 	private PrintWriter writer;
 	private Map<String, Object> args;
+	private Credentials credentials;
 	
 	@Override
 	public ServerMessage executeCommand(Map<String, Object> args) {
@@ -37,6 +39,21 @@ public class TransmitError implements AbstractCommand {
 	@Override
 	public Map<String, Object> getArgs() {
 		return args;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Credentials getCredentials() {
+		return credentials;
+	}
+	
+	@Override
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
 	}
 
 }

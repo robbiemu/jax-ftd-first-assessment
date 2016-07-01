@@ -13,6 +13,7 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cooksys.ftd.week3.transactions.Credentials;
 import com.cooksys.ftd.week3.transactions.Errors;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
@@ -61,4 +62,6 @@ public interface AbstractCommand extends Runnable {
 	PrintWriter getWriter();
 	void setArgs(Map<String, Object> args);
 	Map<String, Object> getArgs();
+
+	void setCredentials(Credentials credentials);
 }

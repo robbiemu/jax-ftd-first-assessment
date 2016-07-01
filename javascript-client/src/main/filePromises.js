@@ -25,4 +25,17 @@ function fileReady (file_path) {
   })
 }
 
-module.exports = fileReady
+function fileNotReady (file_path) {
+  return new Promise(function (res, rej) {
+    fs.access(file_path, function (err) {
+      // is accessible
+      if (err && err.code === 'ENOENT') {
+        res(true)
+      } else {
+        rej(`Error: file exists - ${file_path}`)
+      }
+    })
+  })
+}
+
+module.exports = { fileReady, fileNotReady }
