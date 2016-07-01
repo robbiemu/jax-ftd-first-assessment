@@ -6,8 +6,8 @@ const bcrypt = require('bcryptjs')
 
 const configureHost = require('./configureHost')
 const register = require('./register')
-/*const login = require('./login')
-const upload = require('./upload')
+const login = require('./login')
+/*const upload = require('./upload')
 const download = require('./download')*/
 
 const Vars = {}
@@ -47,12 +47,12 @@ function run () {
   cli.command('register <username> <password>')
     .description('Adds credentials for connections to the database')
     .action(function (args, callback) { register(args, Vars, callback) })
-/*
   cli.command('login <username> <password>')
     .alias('auth')
     .alias('authenticate_with')
     .description('Connections will be made with the given credentials')
-    .action(function (args, callback) { login(Vars, args) })
+    .action(function (args, callback) { login(args, Vars, callback) })
+/*
   cli.command('upload <local file path> [path stored in database]')
     .alias('set')
     .description('Using current credentials for authentication, upload a file to the database')

@@ -3,8 +3,6 @@ package com.cooksys.ftd.week3.command;
 import java.io.PrintWriter;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.cooksys.ftd.week3.db.DBConnection;
@@ -13,31 +11,29 @@ import com.cooksys.ftd.week3.db.dao.UserDao;
 import com.cooksys.ftd.week3.db.model.User;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
-@XmlRootElement
-public class RegisterUser implements AbstractCommand {
+public class Login implements AbstractCommand {
+
 	private PrintWriter writer;
 	private Map<String, Object> args;
-	
+
 	private UserDao userDao = new UserDao();
 	private FileDao fileDao = new FileDao();
 	
-	public RegisterUser(){
+	public Login(){
 		super();
 	}
 	
 	@Override
 	public ServerMessage executeCommand(@NonNull Map<String, Object> args) {
-		User user = new User();
-		user.setUsername((String)args.get(User.USERNAME_COLUMN));
-		user.setPassword((String)args.get(User.PASSWORD_COLUMN));
-		
-		boolean inserted = userDao.insertUser(user, DBConnection.connection);
+/* UserDao throws an error on getUserByUsername having no results. It also ignores
+ *	further results, because the database schema has unique usernames. ServerMessage
+ * will always be a success message with the password_hash */
+		User user = userDao.getUserByUsername(
+				(String)args.get(User.USERNAME_COLUMN), DBConnection.connection);
 		
 		ServerMessage sm = new ServerMessage();
-		sm.setError(!inserted);
-		if(!inserted) {
-			sm.setMessage("Error inserting user credentials into database");
-		}
+		sm.setMessage(user.getPassword());
+		
 		return sm;
 	}
 
@@ -48,7 +44,7 @@ public class RegisterUser implements AbstractCommand {
 
 	@Override
 	public PrintWriter getWriter() {
-		return this.writer;
+		return writer;
 	}
 
 	@Override
@@ -58,7 +54,15 @@ public class RegisterUser implements AbstractCommand {
 
 	@Override
 	public Map<String, Object> getArgs() {
-		return this.args;
+		return args;
+	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 	public FileDao getFileDao() {
@@ -69,11 +73,4 @@ public class RegisterUser implements AbstractCommand {
 		this.fileDao = fileDao;
 	}
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
 }

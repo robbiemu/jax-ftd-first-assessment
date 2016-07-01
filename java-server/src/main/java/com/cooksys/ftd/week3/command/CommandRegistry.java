@@ -7,5 +7,6 @@ public class CommandRegistry {
 	public static Map<String, Class<? extends AbstractCommand>> registry = new HashMap<>();
 	static {
 		registry.put(RegisterUser.class.getSimpleName(), RegisterUser.class);
+		registry.put(Login.class.getSimpleName(), Login.class);
 	}
 }

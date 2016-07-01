@@ -2,16 +2,7 @@
 
 const serviceMessage = require('./serviceMessage')
 const hasher = require('./hash')
-
-function encodeEntry (fieldname, type, value) {
-  return {
-    key: fieldname,
-    value: {
-      type: 'string',
-      value: value
-    }
-  }
-}
+const encodeEntry = require('./encodeEntry')
 
 function register (args, Vars, callback) {
   return (
