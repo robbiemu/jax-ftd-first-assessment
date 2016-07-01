@@ -10,7 +10,7 @@ const EBCRYPT = 'cannot complete hash encoding locally. please try again in a fe
 * @param pwd - string to encode
 * @param callback - function to call after completion
 */
-function encode (pwd) {
+function encode (pwd, Log) {
   return new Promise((res, rej) => {
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
@@ -34,12 +34,15 @@ function encode (pwd) {
 * @param pwd_hash - encoded (hash) password from credentials object
 * @param callback - function handles match/non-match comparison result
 */
-function compare (candidate, pwd_hash, callback) {
-  bcrypt.compare(candidate, pwd_hash, function (err, res) {
-    if (err) {
-      Log.warn(EMISC)
-    }
-    callback(res)
+function compare (candidate, pwd_hash, Log) {
+  return new Promise((res, rej) => {
+    bcrypt.compare(candidate, pwd_hash, function (err, result) {
+      if (err) {
+        Log.warn(EBCRYPT)
+        rej()
+      }
+      res(result)
+    })
   })
 }
 

@@ -1,7 +1,7 @@
 'use strict'
 
 const serviceMessage = require('./serviceMessage')
-//const hasher = require('./hash')
+const comparer = require('./hash')
 const encodeEntry = require('./encodeEntry')
 
 function login (args, Vars, callback) {
@@ -22,13 +22,25 @@ function login (args, Vars, callback) {
           }
         }
 
-        let response = serviceMessage(JSON.stringify(msg), Vars)
-
-        if (response.error) {
-          Vars.Log.error(response.message)
-        } else if (response.message) {
-          Vars.Log.info(response.message)
-        }
+        serviceMessage(JSON.stringify(msg), Vars)
+          .then((response) => {
+            if (response.errors) {
+              Vars.Log.error(`[${response.type}] ${response.message}`)
+            } else {
+              if (response.credentials.password) {
+                comparer.compare(args.password, response.credentials.password,
+                    Vars.Log)
+                  .then((result) => {
+                    if (!result) { // login unsuccessful
+                      Vars.Log.warn('Failed to authenticate, passwords don\'t match')
+                    } else {
+                      Vars.Log.info('Login successful.')
+                    }
+                  })
+              }
+            }
+          })
+          .catch((e) => { Vars.Log(e) })
       } else {
         Vars.Log.warn('Host information not configured! please use configure_host first.')
       }

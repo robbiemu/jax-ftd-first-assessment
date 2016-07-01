@@ -8,7 +8,7 @@ function register (args, Vars, callback) {
   return (
     Promise.resolve('host' in Vars && 'port' in Vars)
     .then((hostReady) => {
-      Promise.resolve(hasher.encode(args.password))
+      Promise.resolve(hasher.encode(args.password, Vars.Log))
       .then((password_hash) => {
         if (hostReady) {
           let msg = {
@@ -29,8 +29,8 @@ function register (args, Vars, callback) {
 
           let response = serviceMessage(JSON.stringify(msg), Vars)
 
-          if (response.error) {
-            Vars.Log.error(response.message)
+          if (response.errors) {
+            Vars.Log.error(`>${response} [${response.type}] ${response.message}`)
           } else if (response.message) {
             Vars.Log.info(response.message)
           }

@@ -6,6 +6,7 @@ import static com.cooksys.ftd.week3.db.DBConnection.DRIVER;
 import static com.cooksys.ftd.week3.db.DBConnection.URL;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,21 +55,22 @@ public class UserDaoTest {
 		
 		ud.insertUser(user, connection);
 		
-		ud = new UserDao();
-		User testf = ud.getUserByUsername("testuser", connection);
-		assertTrue("Password: '" + testf.getPassword() + "' is not 'testpass'", 
-				testf.getPassword().equals("testpass"));
-		
-		System.out.println("UserDaoTest - dbio - passed");
-		
-		String sql = "DELETE FROM users WHERE "+ User.PRIMARY_KEY +" = " + testf.getPrimaryKey();
-		PreparedStatement ps;
 		try {
+			ud = new UserDao();
+			User testf = ud.getUserByUsername("testuser", connection);
+			assertTrue("Password: '" + testf.getPassword() + "' is not 'testpass'", 
+					testf.getPassword().equals("testpass"));
+			
+			System.out.println("UserDaoTest - dbio - passed");
+			
+			String sql = "DELETE FROM users WHERE "+ User.PRIMARY_KEY +" = " + testf.getPrimaryKey();
+			PreparedStatement ps;
+
 			ps = connection.prepareStatement(sql);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			fail("SQLException. Error message: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

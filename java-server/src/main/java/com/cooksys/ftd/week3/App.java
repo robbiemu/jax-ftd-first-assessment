@@ -10,7 +10,7 @@ import com.cooksys.ftd.week3.server.Server;
 
 public class App {
 	private static Logger log = LoggerFactory.getLogger(App.class);
-	private static Server server;
+	public static Server server;
 
 	public static ExecutorService executor;
 

@@ -21,16 +21,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.cooksys.ftd.week3.App;
-import com.cooksys.ftd.week3.command.AbstractCommand;
-import com.cooksys.ftd.week3.command.CommandException;
-import com.cooksys.ftd.week3.command.CommandRegistry;
 import com.cooksys.ftd.week3.command.RegisterUser;
-import com.cooksys.ftd.week3.command.TransmitError;
 import com.cooksys.ftd.week3.transactions.ClientMessage;
 import com.cooksys.ftd.week3.transactions.Credentials;
-import com.cooksys.ftd.week3.transactions.ServerMessage;
-
 
 public class ClientMessageTest {
 	static PrintWriter writer;

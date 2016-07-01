@@ -5,6 +5,7 @@ import static com.cooksys.ftd.week3.db.DBConnection.DB_USERNAME;
 import static com.cooksys.ftd.week3.db.DBConnection.DRIVER;
 import static com.cooksys.ftd.week3.db.DBConnection.URL;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,7 +52,12 @@ public class FileDaoTest {
 		u.setPassword("y");
 		u.setUsername("me");
 		ud.insertUser(u, connection);
-		u = ud.getUserByUsername("me", connection);
+		try {
+			u = ud.getUserByUsername("me", connection);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		FileDao fd = new FileDao();
 		File file = new File();
@@ -80,7 +86,8 @@ public class FileDaoTest {
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			fail("SQLException. Error message: " + e.getMessage());
 			e.printStackTrace();
-		}	}
+		}	
+	}
 }

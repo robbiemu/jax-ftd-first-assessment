@@ -34,7 +34,7 @@ public class UserDao extends Dao {
 		return true;
 	}
 	
-	public User getUserByUsername(String username, Connection c) {
+	public User getUserByUsername(String username, Connection c) throws SQLException {
 		String sql = "SELECT * FROM users WHERE username = '" + username + "'";
 
 		User user = null;
@@ -53,7 +53,10 @@ public class UserDao extends Dao {
 		} catch (SQLException e) {
 			log.warn("Error preparing or executing sql: " + sql);
 			log.warn(e.getMessage());
-			e.printStackTrace();
+			if(!e.getMessage().equals("Illegal operation on empty result set.")) {
+				e.printStackTrace();
+			}
+			throw(e);
 		}
 		return user;
 	}

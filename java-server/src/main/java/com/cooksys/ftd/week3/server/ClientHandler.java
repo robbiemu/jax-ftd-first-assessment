@@ -1,11 +1,14 @@
 package com.cooksys.ftd.week3.server;
 
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import com.cooksys.ftd.week3.transactions.ServerMessage;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
@@ -40,6 +44,15 @@ public class ClientHandler implements Runnable {
 		try {
 			while (!socket.isClosed()) {
 				rawClientInput = reader.readLine();
+				
+				if (rawClientInput == null) {
+					try {
+						Thread.currentThread().join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
 				log.debug(rawClientInput); // TODO - remove this debug
 				
@@ -47,8 +60,8 @@ public class ClientHandler implements Runnable {
 				
 				AbstractCommand ac = clientResponse.getCommand(writer);
 				
-				log.debug("class of abstractcommand: " + ac.getClass());
-				log.debug("args: " + ac.getArgs());
+//				log.debug("class of abstractcommand: " + ac.getClass());
+//				log.debug("args: " + ac.getArgs());
 				
 				ac.setWriter(writer);
 				App.executor.execute(ac);
@@ -82,8 +95,7 @@ public class ClientHandler implements Runnable {
 		}
 		return response;
 	}
-
-
+	
 	public BufferedReader getReader() {
 		return reader;
 	}
