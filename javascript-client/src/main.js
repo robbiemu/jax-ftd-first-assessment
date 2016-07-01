@@ -1,1 +1,5 @@
-console.log('webpack and babel wooooo')
+'use strict'
+
+const app = require('./main/app')
+
+app.run()
