@@ -5,6 +5,7 @@ const comparer = require('./hash')
 const encodeEntry = require('./encodeEntry')
 
 function login (args, Vars, callback) {
+  let Credentials = {}
   return (
     Promise.resolve('host' in Vars && 'port' in Vars)
     .then((hostReady) => {
@@ -34,9 +35,12 @@ function login (args, Vars, callback) {
                     if (!result) { // login unsuccessful
                       Vars.Log.warn('Failed to authenticate, passwords don\'t match')
                     } else {
+                      Credentials.username = args.username
+                      Credentials.password = response.credentials.password
                       Vars.Log.info('Login successful.')
                     }
                   })
+                  .then(function () { callback(Credentials) })
               }
             }
           })
@@ -45,7 +49,6 @@ function login (args, Vars, callback) {
         Vars.Log.warn('Host information not configured! please use configure_host first.')
       }
     })
-    .then(callback())
   )
 }
 

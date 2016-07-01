@@ -7,13 +7,13 @@ const bcrypt = require('bcryptjs')
 const configureHost = require('./configureHost')
 const register = require('./register')
 const login = require('./login')
-/*const upload = require('./upload')
-const download = require('./download')*/
+const upload = require('./upload')
+/*const download = require('./download')*/
 
 const Vars = {}
 
 const LONG_NAME = 'robbie_is_awesome'
-const SHORT_NAME = 'week3project'
+const SHORT_NAME = 'wk3prj'
 const DEFAULT_PROMPT = LONG_NAME + '~$'
 
 function run () {
@@ -51,14 +51,28 @@ function run () {
     .alias('auth')
     .alias('authenticate_with')
     .description('Connections will be made with the given credentials')
-    .action(function (args, callback) { login(args, Vars, callback) })
-/*
-  cli.command('upload <local file path> [path stored in database]')
-    .alias('set')
+    .action(function (args, callback) {
+      login(args, Vars, function (c) {
+        Log.log(c)
+        if ('username' in c) {
+          Vars.username = c.username
+          Vars.password = c.password
+
+          let prompt = `${c.username}@${Vars.host}~$`
+          cli.delimiter(prompt)
+          cli.ui.delimiter = prompt
+        }
+        callback()
+      })
+    })
+
+  cli.command('upload <local_file_path>')
+    .alias('create')
     .description('Using current credentials for authentication, upload a file to the database')
-    .action(function (args, callback) { upload(Vars, args) })
+    .action(function (args, callback) { upload(args, Vars, callback) })
+/*
   cli.command('download <database file id> [local file path]')
-    .alias('get')
+    .alias('read')
     .description('Using current credentials for authentication, retrieve a file from the database')
     .action(function (args, callback) { download(Vars, args) })
   */
