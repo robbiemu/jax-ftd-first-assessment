@@ -39,7 +39,7 @@ function download (args, Vars, callback) {
                     Vars.Log.error(`[${response.type}] ${response.message}`)
                   } else {
                     Vars.Log.info('Received file ' + args.local_file_path)
-                    decoder.decode(response.file, args.local_file_path)
+                    decoder.decode(response.result.result, args.local_file_path)
                   }
                 })
             } else {
