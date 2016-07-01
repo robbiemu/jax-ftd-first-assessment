@@ -32,7 +32,7 @@ function register (args, Vars, callback) {
               if (response.errors) {
                 Vars.Log.error(`Failed to register credentials: [${response.errors.type}] ${response.errors.message}`)
               } else {
-                Vars.Log.info('Login successful.')
+                Vars.Log.info(response.result.result)
               }
             })
             .catch((e) => { Vars.Log(e) })

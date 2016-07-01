@@ -11,6 +11,8 @@ import javax.xml.bind.Marshaller;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.cooksys.ftd.week3.db.DBConnection;
 import com.cooksys.ftd.week3.db.dao.FileDao;
@@ -20,6 +22,7 @@ import com.cooksys.ftd.week3.transactions.Credentials;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
 public class Login implements AbstractCommand {
+	static Logger log = LoggerFactory.getLogger(Login.class);
 
 	private PrintWriter writer;
 	private Map<String, Object> args;

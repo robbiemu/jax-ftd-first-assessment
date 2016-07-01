@@ -23,7 +23,7 @@ import com.cooksys.ftd.week3.transactions.Result;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
 public class Download implements AbstractCommand {
-	static Logger log = LoggerFactory.getLogger(Upload.class);
+	static Logger log = LoggerFactory.getLogger(Download.class);
 
 	private PrintWriter writer;
 	private Map<String, Object> args;

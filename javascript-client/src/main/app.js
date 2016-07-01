@@ -76,10 +76,10 @@ function run () {
     .description('Using current credentials for authentication, retrieve a file from the database')
     .action(function (args, callback) { download(args, Vars, callback) })
 
-/*    cli.command('list')
+/*  cli.command('list').action(new Promise((res,rej) =>{ res('I promise to implement this list if you want') }))
+  cli.command('list')
       .description('Using current credentials for authentication, list files belonging to user')
       .action(function (args, callback) { list(args, Vars, callback) }) */
-
 
   cli.show()
 }

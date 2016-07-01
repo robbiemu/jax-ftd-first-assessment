@@ -3,10 +3,15 @@ package com.cooksys.ftd.week3.command;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.cooksys.ftd.week3.transactions.Credentials;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
 
 public class TransmitError implements AbstractCommand {
+	static Logger log = LoggerFactory.getLogger(TransmitError.class);
+
 	ServerMessage serverMessage;
 	private PrintWriter writer;
 	private Map<String, Object> args;
