@@ -29,10 +29,7 @@ public class ClientHandler implements Runnable {
 	private Socket socket;
 	private BufferedReader reader;
 	private PrintWriter writer;
-	
-	private UserDao userDao = new UserDao();
-	private FileDao fileDao = new FileDao();
-	
+		
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
 	}
@@ -101,22 +98,6 @@ public class ClientHandler implements Runnable {
 
 	public void setWriter(PrintWriter writer) {
 		this.writer = writer;
-	}
-
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public FileDao getFileDao() {
-		return fileDao;
-	}
-
-	public void setFileDao(FileDao fileDao) {
-		this.fileDao = fileDao;
 	}
 
 }

@@ -64,9 +64,6 @@ public class Server implements Runnable {
 		PrintWriter writer = new PrintWriter(socket.getOutputStream());
 		handler.setWriter(writer);
 
-		handler.setUserDao(userDao);
-		handler.setFileDao(fileDao);
-
 		return handler;
 	}
 
@@ -76,22 +73,6 @@ public class Server implements Runnable {
 
 	public void setServerSocket(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
-	}
-
-	public FileDao getFileDao() {
-		return fileDao;
-	}
-
-	public void setFileDao(FileDao fileDao) {
-		this.fileDao = fileDao;
-	}
-
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
 	}
 
 }

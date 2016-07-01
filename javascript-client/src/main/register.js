@@ -27,7 +27,7 @@ function register (args, Vars, callback) {
               args: {
                 entry: [
                   encodeEntry('username', 'string', args.username),
-                  encodeEntry('password_hash', 'string', args.password)
+                  encodeEntry('password_hash', 'string', encode(args.password))
                 ]
               }
             }

@@ -13,14 +13,14 @@ function serviceMessage (msg, Vars) {
         server.write(`${msg}\n`)
 
         server.on('data', (data) => {
-          response = JSON.parse(data)
+          let response = JSON.parse(data)
           resolve(function () {
-            //server.close() // this is happening async so I don't want it in FINALLY
+            server.end() // this is happening async so I don't want it in FINALLY
             return response
           })
         })
       } catch (e) {
-        //server.close()
+        server.end()
         reject(e)
       }
     })
