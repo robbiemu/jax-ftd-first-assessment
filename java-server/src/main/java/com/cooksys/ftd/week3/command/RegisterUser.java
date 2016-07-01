@@ -1,6 +1,7 @@
 package com.cooksys.ftd.week3.command;
 
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,13 +32,19 @@ public class RegisterUser implements AbstractCommand {
 		user.setUsername((String)args.get(User.USERNAME_COLUMN));
 		user.setPassword((String)args.get(User.PASSWORD_COLUMN));
 		
-		boolean inserted = userDao.insertUser(user, DBConnection.connection);
-		
 		ServerMessage sm = new ServerMessage();
-		sm.setError(!inserted);
-		if(!inserted) {
-			sm.setMessage("Error inserting user credentials into database");
+		try {
+			userDao.insertUser(user, DBConnection.connection);
+		} catch (SQLException sqle) {
+			sm.setError(true);
+			sm.setMessage("Cannot register credentials for user " + user.getUsername() + 
+					" Reason: " + sqle.getMessage());
 		}
+
+		if (!sm.getError()) {
+			sm.setMessage("Credentials registered for user " + user.getUsername());
+		}
+
 		return sm;
 	}
 

@@ -51,8 +51,8 @@ public class FileDaoTest {
 		User u = new User();
 		u.setPassword("y");
 		u.setUsername("me");
-		ud.insertUser(u, connection);
 		try {
+			ud.insertUser(u, connection);
 			u = ud.getUserByUsername("me", connection);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

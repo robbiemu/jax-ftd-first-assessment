@@ -1,14 +1,16 @@
 package com.cooksys.ftd.week3.server;
 
-import static org.junit.Assert.fail;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 
-import org.eclipse.persistence.jaxb.MarshallerProperties;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +18,8 @@ import org.slf4j.LoggerFactory;
 import com.cooksys.ftd.week3.App;
 import com.cooksys.ftd.week3.command.AbstractCommand;
 import com.cooksys.ftd.week3.command.TransmitError;
-import com.cooksys.ftd.week3.db.dao.FileDao;
-import com.cooksys.ftd.week3.db.dao.UserDao;
 import com.cooksys.ftd.week3.transactions.ClientMessage;
 import com.cooksys.ftd.week3.transactions.ServerMessage;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
 
 public class ClientHandler implements Runnable {
 	private Logger log = LoggerFactory.getLogger(ClientHandler.class);

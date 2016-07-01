@@ -35,8 +35,11 @@ public class Server implements Runnable {
 			DBConnection.connection = DriverManager.getConnection(
 					URL, DB_USERNAME, DB_PASSWORD);
 						
-			while (true) {				
+			while (true) {		
+				log.debug("Accepting connection on " + SERVER_PORT);
 				Socket socket = this.serverSocket.accept();
+				log.debug("Client connection established");
+				
 				ClientHandler handler = this.createClientHandler(socket);
 
 				App.executor.execute(handler);

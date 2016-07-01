@@ -27,13 +27,15 @@ function register (args, Vars, callback) {
             }
           }
 
-          let response = serviceMessage(JSON.stringify(msg), Vars)
-
-          if (response.errors) {
-            Vars.Log.error(`>${response} [${response.type}] ${response.message}`)
-          } else if (response.message) {
-            Vars.Log.info(response.message)
-          }
+          serviceMessage(JSON.stringify(msg), Vars)
+            .then((response) => {
+              if (response.errors) {
+                Vars.Log.error(`Failed to register credentials: [${response.errors.type}] ${response.errors.message}`)
+              } else {
+                Vars.Log.info('Login successful.')
+              }
+            })
+            .catch((e) => { Vars.Log(e) })
         } else {
           Vars.Log.warn('Host information not configured! please use configure_host first.')
         }

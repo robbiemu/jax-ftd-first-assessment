@@ -53,9 +53,9 @@ public class UserDaoTest {
 		user.setUsername("testuser");
 		user.setPassword("testpass");
 		
-		ud.insertUser(user, connection);
-		
 		try {
+			ud.insertUser(user, connection);
+			
 			ud = new UserDao();
 			User testf = ud.getUserByUsername("testuser", connection);
 			assertTrue("Password: '" + testf.getPassword() + "' is not 'testpass'", 

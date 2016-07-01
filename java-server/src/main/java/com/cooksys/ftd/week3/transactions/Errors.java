@@ -7,6 +7,10 @@ public class Errors {
 	public String type;
 	public String message;
 	
+	public Errors () {
+		
+	}
+	
 	public String getType() {
 		return type;
 	}

@@ -17,7 +17,7 @@ public class UserDao extends Dao {
 
 	public static final String EUSER_OR_PWD = "error with username or password";
 
-	public boolean insertUser(User user, Connection c) {
+	public void insertUser(User user, Connection c) throws SQLException {
 		String sql = "INSERT INTO users ("+USERNAME_COLUMN+", "+PASSWORD_COLUMN+") VALUES ('" + 
 					user.getUsername() + "', '" + user.getPassword() + "')";
 		
@@ -28,10 +28,11 @@ public class UserDao extends Dao {
 		} catch (SQLException e) {
 			log.warn("Error preparing or executing sql: " + sql);
 			log.warn(e.getMessage());
-			e.printStackTrace();
-			return false;
+			if(!e.getMessage().substring(0, 15).equals("Duplicate entry")) {
+				e.printStackTrace();				
+			}
+			throw(e);
 		}
-		return true;
 	}
 	
 	public User getUserByUsername(String username, Connection c) throws SQLException {
