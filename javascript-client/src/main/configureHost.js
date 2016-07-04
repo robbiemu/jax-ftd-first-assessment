@@ -11,7 +11,7 @@ function configureHost (args, Vars, callback) {
         Vars.host = args.host
         Vars.port = args.port
       })
-      .then(() => Vars.Log.info('Host configuration successful!'))
+      .then(() => Vars.Log.info('Host configuration successful.'))
       .then(callback())
       .catch((err) => Vars.Log.error(`the end of the world! ${err}`))
   )

@@ -10,5 +10,7 @@ public class CommandRegistry {
 		registry.put(Login.class.getSimpleName(), Login.class);
 		registry.put(Upload.class.getSimpleName(), Upload.class);
 		registry.put(Download.class.getSimpleName(), Download.class);
+		registry.put(ListFiles.class.getSimpleName(), ListFiles.class);
+
 	}
 }

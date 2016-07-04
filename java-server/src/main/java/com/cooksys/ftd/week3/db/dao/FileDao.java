@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,4 +86,28 @@ public class FileDao extends Dao {
 		return file;
 	}
 
+	public String[] getFilenamesByUserFK(Long fk, Connection c) {
+		String sql = "SELECT "+ File.FILENAME_COLUMN +" FROM files WHERE user_id = " + fk;
+
+		List<String> filenames = new ArrayList<>();
+		try {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				filenames.add(rs.getString(File.FILENAME_COLUMN));
+			}
+
+			rs.close();
+			ps.close();
+			
+		} catch (SQLException e) {
+			log.warn("Error preparing or executing sql: " + sql);
+			log.warn(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return filenames.toArray(new String[0]);
+	}
+
+	
 }

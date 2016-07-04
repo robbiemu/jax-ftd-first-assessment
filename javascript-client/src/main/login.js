@@ -3,6 +3,7 @@
 const serviceMessage = require('./serviceMessage')
 const comparer = require('./hash')
 const encodeEntry = require('./encodeEntry')
+const Defs = require('./defs')
 
 function login (args, Vars, callback) {
   let Credentials = {}
@@ -21,6 +22,10 @@ function login (args, Vars, callback) {
               entry: [ encodeEntry('username', 'string', args.username) ]
             }
           }
+        }
+
+        if (Defs.VERBOSE) {
+          Vars.Log.info(`sending ${JSON.stringify(msg)}`)
         }
 
         serviceMessage(JSON.stringify(msg), Vars)

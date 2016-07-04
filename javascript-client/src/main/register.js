@@ -3,6 +3,7 @@
 const serviceMessage = require('./serviceMessage')
 const hasher = require('./hash')
 const encodeEntry = require('./encodeEntry')
+const Defs = require('./defs')
 
 function register (args, Vars, callback) {
   return (
@@ -25,6 +26,10 @@ function register (args, Vars, callback) {
                 ]
               }
             }
+          }
+
+          if (Defs.VERBOSE) {
+            Vars.Log.info(`sending ${JSON.stringify(msg)}`)
           }
 
           serviceMessage(JSON.stringify(msg), Vars)

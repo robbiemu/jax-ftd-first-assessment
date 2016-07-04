@@ -4,6 +4,7 @@ const serviceMessage = require('./serviceMessage')
 const encodeEntry = require('./encodeEntry')
 const Base64 = require('./base64')
 const { fileReady, i } = require('./filePromises')
+const Defs = require('./defs')
 
 function upload (args, Vars, callback) {
   return (
@@ -32,7 +33,9 @@ function upload (args, Vars, callback) {
                 }
               }
 
-              Vars.Log.info(`sending ${JSON.stringify(msg)}`)
+              if (Defs.VERBOSE) {
+                Vars.Log.info(`sending ${JSON.stringify(msg)}`)
+              }
 
               serviceMessage(JSON.stringify(msg), Vars)
                 .then((response) => {

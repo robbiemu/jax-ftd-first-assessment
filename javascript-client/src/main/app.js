@@ -5,10 +5,12 @@ const vorpalLogger = require('vorpal-log')
 const bcrypt = require('bcryptjs')
 
 const configureHost = require('./configureHost')
+const Defs = require('./defs')
 const register = require('./register')
 const login = require('./login')
 const upload = require('./upload')
 const download = require('./download')
+const list = require('./list')
 
 const Vars = {}
 
@@ -30,20 +32,21 @@ function run () {
   const Log = cli.logger
   Vars.Log = cli.logger
 
+  if(Defs.DEBUGMODE) {
+    cli.command('vars')
+      .description('[debug] Echos Vars')
+      .action(function (args, callback) {
+        let tmp = Vars
+        delete tmp.Log
+        Log.info(`Vars: ${JSON.stringify(tmp)}`)
+        callback()
+      })
+  }
+
   cli.command('configure_host <port> [host]')
     .alias('host')
     .description('Sets the host and port for connection to the database')
     .action(function (args, callback) { configureHost(args, Vars, callback) })
-
-  cli.command('vars')
-    .description('[debug] Echos Vars')
-    .action(function (args, callback) {
-      let tmp = Vars
-      delete tmp.Log
-      Log.info(`Vars: ${JSON.stringify(tmp)}`)
-      callback()
-    })
-
   cli.command('register <username> <password>')
     .description('Adds credentials for connections to the database')
     .action(function (args, callback) { register(args, Vars, callback) })
@@ -53,7 +56,9 @@ function run () {
     .description('Connections will be made with the given credentials')
     .action(function (args, callback) {
       login(args, Vars, function (c) {
-        Log.log(c)
+        if(Defs.DEBUGMODE) {
+          Log.log(c)
+        }
         if ('username' in c) {
           Vars.username = c.username
           Vars.password = c.password
@@ -76,10 +81,9 @@ function run () {
     .description('Using current credentials for authentication, retrieve a file from the database')
     .action(function (args, callback) { download(args, Vars, callback) })
 
-/*  cli.command('list').action(new Promise((res,rej) =>{ res('I promise to implement this list if you want') }))
   cli.command('list')
       .description('Using current credentials for authentication, list files belonging to user')
-      .action(function (args, callback) { list(args, Vars, callback) }) */
+      .action(function (args, callback) { list(args, Vars, callback) })
 
   cli.show()
 }

@@ -4,6 +4,7 @@ const serviceMessage = require('./serviceMessage')
 const encodeEntry = require('./encodeEntry')
 const Base64 = require('./base64')
 const { i, fileNotReady } = require('./filePromises')
+const Defs = require('./defs')
 
 function download (args, Vars, callback) {
   return (
@@ -31,7 +32,9 @@ function download (args, Vars, callback) {
                 }
               }
 
-              Vars.Log.info(`sending ${JSON.stringify(msg)}`)
+              if (Defs.VERBOSE) {
+                Vars.Log.info(`sending ${JSON.stringify(msg)}`)
+              }
 
               serviceMessage(JSON.stringify(msg), Vars)
                 .then((response) => {
